@@ -5,17 +5,8 @@ const express = require('express');
 const socketIO = require('socket.io');
 
 const PORT = process.env.PORT || 3000;
-const INDEX = '/build/index.html';
-
-// const app = express(); // create express app
-
-// // add middleware
-// app.use(express.static("public"));
-
-// // start express server on port 5000
-// app.listen(5000, () => {
-//   console.log("server started on port 5000");
-// });
+// const INDEX = '/build/index.html';
+const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
 
 const app = express()
     .use(express.static('build'))
@@ -23,39 +14,14 @@ const app = express()
 
 const io = socketIO(app);
 
-// app.get("/", (req, res) => {
-//     res.sendFile(path.join(__dirname, "public", "index.html"));
-//   });
-
-// const server = express()
-// //   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-//   .use((req, res) => res.sendFile(path.join(__dirname, "public", 'index.html')))
-//   .listen(PORT, () => console.log(`Listening on ${PORT}`));
-
-// const io = socketIO(server);
-
 io.on('connection', (socket) => {
-  console.log('Client connected');
-  socket.on('disconnect', () => console.log('Client disconnected'));
-  socket.on('newChatMessage', (data) => {
-      console.log('received');
-      console.log(data);
-      socket.emit('newChatMessage', 'it worked');
-  })
+    console.log('Client connected');
+    socket.on('disconnect', () => console.log('Client disconnected'));
+    socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
+        console.log('received');
+        console.log(data);
+        socket.emit('newChatMessage', 'it worked');
+    })
 });
-
-io.on('event', (socket) => {
-    console.log('asdfasdfasdf');
-});
-
-io.on('action', (socket) => {
-    console.log('fdasfdas');
-})
-
-// socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
-//     console.log(NEW_CHAT_MESSAGE_EVENT + ': ');
-//     console.log(data);  
-//     io.in(roomId).emit(NEW_CHAT_MESSAGE_EVENT, data);
-//   });
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);

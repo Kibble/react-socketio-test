@@ -2,43 +2,41 @@ import { useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 
 const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
-// const SOCKET_SERVER_URL = "https://kibble-lj-server.herokuapp.com:6009";
-// const SOCKET_SERVER_URL = window.location.href;
-const SOCKET_SERVER_URL = 'https://kibble-socketio-example.herokuapp.com';
-
+const SOCKET_SERVER_URL = 'localhost:3000';
+// const SOCKET_SERVER_URL = 'https://kibble-socketio-example.herokuapp.com';
 
 const useChat = (roomId) => {
-  const [messages, setMessages] = useState([]);
-  const socketRef = useRef();
+    const [messages, setMessages] = useState([]);
+    const socketRef = useRef();
 
-  useEffect(() => {
+    useEffect(() => {
         socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
-      query: { roomId },
-    });
+            query: { roomId },
+        });
 
-    socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => {
-        console.log(message);
-      const incomingMessage = {
-        ...message,
-        ownedByCurrentUser: message.senderId === socketRef.current.id,  
-      };
-      setMessages((messages) => [...messages, incomingMessage]);
-    });
+        socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => {
+            console.log(message);
+            const incomingMessage = {
+                ...message,
+                ownedByCurrentUser: message.senderId === socketRef.current.id,  
+            };
+            setMessages((messages) => [...messages, incomingMessage]);
+        });
 
-    return () => {
-      socketRef.current.disconnect();
+        return () => {
+            socketRef.current.disconnect();
+        };
+    }, [roomId]);
+
+    const sendMessage = (messageBody) => {
+        console.log('sendMessage()');
+        socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
+            body: messageBody,
+            senderId: socketRef.current.id,
+        });
     };
-  }, [roomId]);
 
-  const sendMessage = (messageBody) => {
-      console.log('sendMessage()');
-    socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
-      body: messageBody,
-      senderId: socketRef.current.id,
-    });
-  };
-
-  return { messages, sendMessage };
+    return { messages, sendMessage };
 };
 
 export default useChat;
