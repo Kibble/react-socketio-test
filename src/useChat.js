@@ -3,7 +3,8 @@ import socketIOClient from "socket.io-client";
 
 const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
 // const SOCKET_SERVER_URL = "https://kibble-lj-server.herokuapp.com:6009";
-const SOCKET_SERVER_URL = window.location.href;
+// const SOCKET_SERVER_URL = window.location.href;
+const SOCKET_SERVER_URL = 'https://kibble-socketio-example.herokuapp.com';
 
 
 const useChat = (roomId) => {
