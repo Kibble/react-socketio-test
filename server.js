@@ -47,6 +47,11 @@ io.on('action', (socket) => {
     console.log('fdasfdas');
 })
 
+io.on('test message', (data) => {
+    console.log('test message');
+    io.in(12345).emit('test message', 'test');
+})
+
 // socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
 //     console.log(NEW_CHAT_MESSAGE_EVENT + ': ');
 //     console.log(data);  
