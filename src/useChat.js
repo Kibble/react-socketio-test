@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 
 const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
-const SOCKET_SERVER_URL = 'localhost:3000';
-// const SOCKET_SERVER_URL = 'https://kibble-socketio-example.herokuapp.com';
+// const SOCKET_SERVER_URL = 'localhost:3000';
+const SOCKET_SERVER_URL = 'https://kibble-socketio-example.herokuapp.com';
 
 const useChat = (roomId) => {
     const [messages, setMessages] = useState([]);
