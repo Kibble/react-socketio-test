@@ -37,6 +37,11 @@ const io = socketIO(app);
 io.on('connection', (socket) => {
   console.log('Client connected');
   socket.on('disconnect', () => console.log('Client disconnected'));
+  socket.on('newChatMessage', (data) => {
+      console.log('received');
+      console.log(data);
+      socket.emit('newChatMessage', 'it worked');
+  })
 });
 
 io.on('event', (socket) => {
@@ -45,11 +50,6 @@ io.on('event', (socket) => {
 
 io.on('action', (socket) => {
     console.log('fdasfdas');
-})
-
-io.on('test message', (data) => {
-    console.log('test message');
-    io.in(12345).emit('test message', 'test');
 })
 
 // socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {

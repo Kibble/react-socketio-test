@@ -17,13 +17,14 @@ import useChat from './useChat';
 
 const App = () => {
   const { messages, sendMessage } = useChat(12345);
-  
+
   const click = () => {
     console.log('clicked');
     // let io = new Server('http'); 
     // io.sockets.emit('action', 'payload');
     
     sendMessage('test message');
+    console.log(messages);
   }
 
   return (  

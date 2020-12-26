@@ -12,14 +12,15 @@ const useChat = (roomId) => {
   const socketRef = useRef();
 
   useEffect(() => {
-    socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
+        socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
       query: { roomId },
     });
 
     socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => {
+        console.log(message);
       const incomingMessage = {
         ...message,
-        ownedByCurrentUser: message.senderId === socketRef.current.id,
+        ownedByCurrentUser: message.senderId === socketRef.current.id,  
       };
       setMessages((messages) => [...messages, incomingMessage]);
     });
@@ -30,6 +31,7 @@ const useChat = (roomId) => {
   }, [roomId]);
 
   const sendMessage = (messageBody) => {
+      console.log('sendMessage()');
     socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
       body: messageBody,
       senderId: socketRef.current.id,
