@@ -17,15 +17,16 @@ const io = socketIO(app);
 io.on('connection', (socket) => {
     console.log('Client connected');
     socket.on('disconnect', () => console.log('Client disconnected'));
-    socket.onAny((data) => {
+    socket.onAny((type, data) => {
         console.log('Received: ');
         console.log(data);
+        socket.emit('echo', data);
     });
     socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
         console.log('received');
         console.log(data);
-        socket.emit('newChatMessage', 'it worked');
+        socket.emit(NEW_CHAT_MESSAGE_EVENT, 'it worked');
     });
 });
 
-setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
+// setInterval(() => io.emit('time', new Date().toTimeString()), 1000); 
